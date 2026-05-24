@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('AKIA23JLT6NJ2XXILNX3')
+        AWS_SECRET_ACCESS_KEY = credentials('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')
+    }
+
+    stages {
+
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/goodfanphiri-a11y/professional-portfolio.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip3 install boto3'
+            }
+        }
+
+        stage('Deploy to S3') {
+            steps {
+                sh 'python3 deploy.py'
+            }
+        }
+    }
+}
